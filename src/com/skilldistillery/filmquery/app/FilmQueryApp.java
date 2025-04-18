@@ -1,0 +1,43 @@
+package com.skilldistillery.filmquery.app;
+
+import java.util.Scanner;
+
+import com.skilldistillery.filmquery.database.DatabaseAccessor;
+import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Film;
+
+public class FilmQueryApp {
+  
+  DatabaseAccessor db = new DatabaseAccessorObject();
+
+  public static void main(String[] args) {
+    FilmQueryApp app = new FilmQueryApp();
+    
+    // here will comment out test and uncomment launch
+    app.test();
+//    app.launch();
+  }
+
+  private void test() {
+    Film film = db.findFilmById(10);
+    if (film == null) {
+    	System.out.print("There's no film with film id ");
+    }
+    System.out.println(film);
+  }
+
+  private void launch() {
+    Scanner input = new Scanner(System.in);
+//    Actor actor = db.findActorById(input);
+    startUserInterface(input);
+    
+    input.close();
+  }
+
+  private void startUserInterface(Scanner input) {
+    
+	  
+	  
+  }
+
+}
