@@ -1,5 +1,7 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.List;
+
 // a field for each of the columns in films table, use int 
 public class Film {
 
@@ -15,7 +17,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-
+	private List <Actor> actors;
 	// no-arg constructor
 	public Film() {
 		super();
@@ -109,6 +111,14 @@ public class Film {
 
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
+	}
+	
+	public List<Actor> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
 	}
 
 	// toString
