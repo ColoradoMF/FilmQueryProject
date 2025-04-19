@@ -31,8 +31,6 @@ public class FilmQueryApp {
 	}
 
 	private void launch() {
-//	  int input = 10; 
-//    System.out.println(actor);
 		startUserInterface();
 
 		input.close();
@@ -41,47 +39,58 @@ public class FilmQueryApp {
 	private void startUserInterface() {
 		boolean menuLoop = true;
 		String menuChoice;
-		System.out.println("\n\n");
+		System.out.println("\n");
+		try {
 
-		while (menuLoop) {
-			displayUserMenu();
-			menuChoice = input.next();
-			input.nextLine();
+			while (menuLoop) {
+				displayUserMenu();
+				menuChoice = input.next();
+				input.nextLine();
 
-			// switch for the
-			switch (menuChoice) {
+				// switch for the menu
+				switch (menuChoice) {
 
-			case "1": {
-				System.out.println("Enter a film ID #:");
-				int userFilmId = input.nextInt();
-				
-				Film film = db.findFilmById(userFilmId);
-				if (film == null) {
-					System.out.print("There's no film with that film id, so the value is ");
+				case "1": {
+					System.out.println("Enter a film ID #:");
+					int userFilmId = input.nextInt();
+
+					Film film = db.findFilmById(userFilmId);
+					if (film == null) {
+						System.out.print("There's no film with that film id, so the value is ");
+					}
+					System.out.println(film);
+					System.out.println(film.getActors());
+
+					continue;
 				}
-				System.out.println(film);
-				System.out.println(film.getActors());
 
-				continue;
+				case "2": {
+					System.out.println("Enter a keyword to search on: ");
+					String keyword = input.next();
+					
+//					if () {
+//						System.out.println("Keyword not found for: " + keyword);
+//					}
+					continue;
+				}
+
+				case "3": {
+					quit();
+					menuLoop = false;
+					break;
+				}
+
+				default: {
+					System.out.println("Invalid selection, kindly key in a number between 1 and 3.");
+					continue;
+				}
+				}
 			}
 
-			case "2": {
-
-				continue;
-			}
-
-			case "3": {
-				quit();
-				menuLoop = false;
-				break;
-			}
-
-			default:
-				System.out.println("Invalid selection, kindly key in a number between 1 and 3.");
-				continue;
-
-			}
-
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Kindly restart app and key in a valid film ID to try again.");
+			menuLoop = false;
 		}
 
 	}
