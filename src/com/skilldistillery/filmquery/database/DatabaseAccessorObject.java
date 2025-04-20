@@ -107,12 +107,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		  
 			ResultSet actorResult = stmt.executeQuery();
 			while (actorResult.next()) {
-		    Actor actor = new Actor(); // Create the object
-		    // Here is our mapping of query columns to our object fields:
-		    actor.setId(actorResult.getInt(1));
-		    actor.setFirstName(actorResult.getString(2));
-		    actor.setLastName(actorResult.getString(3));
-		    actors.add(actor);
+			    Actor actor = new Actor(); // Create the object
+			    // map query columns to object fields:
+			    actor.setId(actorResult.getInt(1));
+			    actor.setFirstName(actorResult.getString(2));
+			    actor.setLastName(actorResult.getString(3));
+			    actors.add(actor);
 		  }
 			conn.close();
 		} catch (SQLException e) {
@@ -121,4 +121,68 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return actors;
 	
 	}
+
+	@Override
+	public List<Film> findFilmByKeyword(String keyword) {
+		List<Film> films = new ArrayList<>();
+		
+		try {
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			
+			String sql = "SELECT * "
+					+ "FROM film "
+					+ "WHERE description LIKE ? OR title LIKE ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1,"%" + keyword + "%");
+			stmt.setString(2,"%" + keyword + "%");
+		
+			ResultSet filmsResult = stmt.executeQuery();
+				while (filmsResult.next()) {
+			    Film film = new Film(); // Create the object
+			    // map query columns to object fields:
+			    film.setId(filmsResult.getInt(1));
+			    film.setTitle(filmsResult.getString(2));
+			    film.setDescription(filmsResult.getString(3));
+			    film.setReleaseYear(filmsResult.getInt(4));
+			    film.setLanguage(filmsResult.getInt(5));
+			    film.setLanguageId(filmsResult.getString(6));
+			    film.setRentalDuration(filmsResult.getInt(7));
+			    film.setRentalRate(filmsResult.getDouble(8));
+			    films.add(film);
+//			    Field            | Type                                                                | Null | Key | Default | Extra          |
+//			    id               | int                                                                 | NO   | PRI | NULL    | auto_increment |
+//			    | title            | varchar(255)                                                        | NO   | MUL | NULL    |                |
+//			    | description      | text                                                                | YES  |     | NULL    |                |
+//			    | release_year     | year                                                                | YES  |     | NULL    |                |
+//			    | language_id      | tinyint unsigned                                                    | NO   | MUL | NULL    |                |
+//			    | rental_duration  | tinyint unsigned                                                    | NO   |     | 3       |                |
+//			    | rental_rate      | decimal(4,2)                                                        | NO   |     | 4.99    |                |
+//			    | length           | smallint unsigned                                                   | YES  |     | NULL    |                |
+//			    | replacement_cost | decimal(5,2)                                                        | NO   |     | 19.99   |                |
+//			    | rating           | enum('G','PG','PG13','R','NC17')                                    | YES  |     | G       |                |
+//			    | special_features | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL    |                |
+
+		  }
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return films;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
