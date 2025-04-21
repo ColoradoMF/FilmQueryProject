@@ -144,10 +144,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			    film.setTitle(filmsResult.getString(2));
 			    film.setDescription(filmsResult.getString(3));
 			    film.setReleaseYear(filmsResult.getInt(4));
-			    film.setLanguage(filmsResult.getInt(5));
-			    film.setLanguageId(filmsResult.getString(6));
+			    film.setLanguage(filmsResult.getString(5));
+			    film.setLanguageId(filmsResult.getInt(6));
 			    film.setRentalDuration(filmsResult.getInt(7));
 			    film.setRentalRate(filmsResult.getDouble(8));
+			    film.setLength(filmsResult.getInt(9));
+			    film.setReplacementCost(filmsResult.getDouble(10));
+			    film.setRating(filmsResult.getString(11));
+			    film.setSpecialFeatures(filmsResult.getString(12));
 			    films.add(film);
 //			    Field            | Type                                                                | Null | Key | Default | Extra          |
 //			    id               | int                                                                 | NO   | PRI | NULL    | auto_increment |
@@ -169,6 +173,30 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return films;
 	}
+	
+	@Override
+	public String findLanguageById(int languageId) {
+		String language = null;
+		String sql = "SELECT name FROM language WHERE id = ?";
+
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setInt(1, languageId);
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				language = rs.getString("name");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return language;
+	}
+	
+
 }
 
 

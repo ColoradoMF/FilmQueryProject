@@ -10,6 +10,7 @@ public class Film {
 	private String title;
 	private String description;
 	private int releaseYear;
+	private String language;
 	private int languageId;
 	private int rentalDuration;
 	private double rentalRate; // 4 digits total, two of which come after the decimal - max 99.99
@@ -56,7 +57,15 @@ public class Film {
 	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
+	
+	public String getLanguage() {
+		return language;
+	}
 
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
 	public int getLanguageId() {
 		return languageId;
 	}
@@ -133,6 +142,5 @@ public class Film {
 				.append(specialFeatures).append("]");
 		return builder.toString();
 	}
-
 	
 }

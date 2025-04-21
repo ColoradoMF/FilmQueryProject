@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
@@ -59,9 +60,18 @@ public class FilmQueryApp {
 					if (film == null) {
 						System.out.print("There's no film with that film id, so the value is ");
 					}
-					System.out.println(film);
-					System.out.println(film.getActors());
-
+//					System.out.println(film);
+//					System.out.println(film.getActors());
+					System.out.println(" Title: " + film.getTitle());
+					System.out.println(" Year: " + film.getReleaseYear());
+					System.out.println(" Rating: " + film.getRating());
+					System.out.println(" Language: " + film.getLanguage());
+					System.out.println(" Description: " + film.getDescription());
+					System.out.println(" Cast:  ");
+					for (Actor actors : film.getActors()) {
+						System.out.println("       " + actors.getFirstName() + " " + actors.getLastName());
+					}
+					
 					continue;
 				}
 
@@ -107,6 +117,7 @@ public class FilmQueryApp {
 	}
 
 	private void displayUserMenu() {
+		System.out.println("\n");
 		System.out.println("=========================================");
 		System.out.println("==         Film Query (Menu)           ==");
 		System.out.println("==Press the # for your selected action ==");
@@ -115,7 +126,7 @@ public class FilmQueryApp {
 		System.out.println("== 2. To look up a film by keyword.    ==");
 		System.out.println("== 3. To exit Film Query application.  ==");
 		System.out.println("=========================================");
-		System.out.println("\n");
+		
 	}
 
 }
