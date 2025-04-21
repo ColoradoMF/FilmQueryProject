@@ -46,6 +46,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				foundFilm.setDescription(filmData.getString("description"));
 				foundFilm.setReleaseYear(filmData.getInt("release_year"));
 				foundFilm.setLanguageId(filmData.getInt("language_id"));
+				int langId = filmData.getInt("language_id");
+				foundFilm.setLanguageId(langId);
+				foundFilm.setLanguage(findLanguageById(langId));
+
 				foundFilm.setRentalDuration(filmData.getInt("rental_duration"));
 				foundFilm.setRentalRate(filmData.getDouble("rental_rate"));
 				foundFilm.setLength(filmData.getInt("length"));
@@ -198,19 +202,3 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
