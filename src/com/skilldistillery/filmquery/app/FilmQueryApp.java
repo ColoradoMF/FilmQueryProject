@@ -75,19 +75,46 @@ public class FilmQueryApp {
 					continue;
 				}
 
+//				case "2": {
+//					System.out.println("Enter a keyword to search on: ");
+//					String keyword = input.next();
+//					List<Film> filmByKeyword = db.findFilmByKeyword(keyword);
+//					if (filmByKeyword == null) {
+//						System.out.println("Keyword not found for: " + keyword);
+//					}
+//					else {
+//						for (Film filmByKey : filmByKeyword) {
+//							System.out.println(filmByKey);
+//						}
+//					}
+//					continue;
+					
 				case "2": {
-					System.out.println("Enter a keyword to search on: ");
-					String keyword = input.next();
-					List<Film> filmByKeyword = db.findFilmByKeyword(keyword);
-					if (filmByKeyword == null) {
-						System.out.println("Keyword not found for: " + keyword);
-					}
-					else {
-						for (Film filmByKey : filmByKeyword) {
-							System.out.println(filmByKey);
-						}
-					}
-					continue;
+				    System.out.println("Enter a keyword to search on: ");
+				    String keyword = input.nextLine();
+				    
+				    List<Film> filmByKeyword = db.findFilmByKeyword(keyword);
+				    
+				    if (filmByKeyword == null || filmByKeyword.isEmpty()) {
+				        System.out.println("No films found for keyword: " + keyword);
+				    } else {
+				        for (Film film : filmByKeyword) {
+				            System.out.println(" Title: " + film.getTitle());
+				            System.out.println(" Year: " + film.getReleaseYear());
+				            System.out.println(" Rating: " + film.getRating());
+				            System.out.println(" Language: " + film.getLanguage());
+				            System.out.println(" Description: " + film.getDescription());
+				            System.out.println(" Cast:");
+				            for (Actor actor : film.getActors()) {
+				                System.out.println("       " + actor.getFirstName() + " " + actor.getLastName());
+				            }
+				            System.out.println();
+				        }
+				    }
+				    continue;
+				
+
+					
 				}
 
 				case "3": {

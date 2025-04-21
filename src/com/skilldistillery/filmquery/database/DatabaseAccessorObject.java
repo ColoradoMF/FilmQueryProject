@@ -128,55 +128,53 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public List<Film> findFilmByKeyword(String keyword) {
-		List<Film> films = new ArrayList<>();
-		
-		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			
-			String sql = "SELECT * "
-					+ "FROM film "
-					+ "WHERE description LIKE ? OR title LIKE ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1,"%" + keyword + "%");
-			stmt.setString(2,"%" + keyword + "%");
-		
-			ResultSet filmsResult = stmt.executeQuery();
-				while (filmsResult.next()) {
-			    Film film = new Film(); // Create the object
-			    // map query columns to object fields:
-			    film.setId(filmsResult.getInt(1));
-			    film.setTitle(filmsResult.getString(2));
-			    film.setDescription(filmsResult.getString(3));
-			    film.setReleaseYear(filmsResult.getInt(4));
-			    film.setLanguage(filmsResult.getString(5));
-			    film.setLanguageId(filmsResult.getInt(6));
-			    film.setRentalDuration(filmsResult.getInt(7));
-			    film.setRentalRate(filmsResult.getDouble(8));
-			    film.setLength(filmsResult.getInt(9));
-			    film.setReplacementCost(filmsResult.getDouble(10));
-			    film.setRating(filmsResult.getString(11));
-			    film.setSpecialFeatures(filmsResult.getString(12));
-			    films.add(film);
-//			    Field            | Type                                                                | Null | Key | Default | Extra          |
-//			    id               | int                                                                 | NO   | PRI | NULL    | auto_increment |
-//			    | title            | varchar(255)                                                        | NO   | MUL | NULL    |                |
-//			    | description      | text                                                                | YES  |     | NULL    |                |
-//			    | release_year     | year                                                                | YES  |     | NULL    |                |
-//			    | language_id      | tinyint unsigned                                                    | NO   | MUL | NULL    |                |
-//			    | rental_duration  | tinyint unsigned                                                    | NO   |     | 3       |                |
-//			    | rental_rate      | decimal(4,2)                                                        | NO   |     | 4.99    |                |
-//			    | length           | smallint unsigned                                                   | YES  |     | NULL    |                |
-//			    | replacement_cost | decimal(5,2)                                                        | NO   |     | 19.99   |                |
-//			    | rating           | enum('G','PG','PG13','R','NC17')                                    | YES  |     | G       |                |
-//			    | special_features | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL    |                |
+	    List<Film> films = new ArrayList<>();
 
-		  }
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return films;
+	    try {
+	        Connection conn = DriverManager.getConnection(URL, USER, PASS);
+
+	        String sql = "SELECT film.id, film.title, film.description, film.release_year, " +
+	                     "film.language_id, language.name, film.rental_duration, " +
+	                     "film.rental_rate, film.length, film.replacement_cost, " +
+	                     "film.rating, film.special_features " +
+	                     "FROM film JOIN language ON film.language_id = language.id " +
+	                     "WHERE film.title LIKE ? OR film.description LIKE ?";
+
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt.setString(1, "%" + keyword + "%");
+	        stmt.setString(2, "%" + keyword + "%");
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            Film film = new Film();
+
+	            film.setId(rs.getInt("film.id"));
+	            film.setTitle(rs.getString("film.title"));
+	            film.setDescription(rs.getString("film.description"));
+	            film.setReleaseYear(rs.getInt("film.release_year"));
+	            film.setLanguageId(rs.getInt("film.language_id"));
+	            film.setLanguage(rs.getString("language.name"));
+	            film.setRentalDuration(rs.getInt("film.rental_duration"));
+	            film.setRentalRate(rs.getDouble("film.rental_rate"));
+	            film.setLength(rs.getInt("film.length"));
+	            film.setReplacementCost(rs.getDouble("film.replacement_cost"));
+	            film.setRating(rs.getString("film.rating"));
+	            film.setSpecialFeatures(rs.getString("film.special_features"));
+
+	            film.setActors(findActorsByFilmId(film.getId()));
+
+	            films.add(film);
+	        }
+
+	        conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return films;
 	}
+
 	
 	@Override
 	public String findLanguageById(int languageId) {
@@ -199,6 +197,5 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		
 		return language;
 	}
-	
 
 }
